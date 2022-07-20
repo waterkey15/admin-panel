@@ -1,0 +1,11 @@
+.add-user-container{
+    display: flex;
+    justify-content: center;
+}
+
+.circle-svg > svg{
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+

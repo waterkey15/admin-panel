@@ -1,0 +1,26 @@
+.header-container{
+    background-color: grey !important;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcome-logo{
+    font-size: 55px;
+}
+
+.sign-in-button{
+    min-width: 200px;
+    min-height: 50px;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.welcommer{
+    display: flex;
+    flex-direction: column;
+}
+.welcommer > button{
+    margin-top: 15px;
+}
