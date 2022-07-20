@@ -10,7 +10,6 @@
     margin-top: -150px;
     margin-left: -350px;
     border: 1px solid blue;
-    padding-top: 80px;
     padding-right: 30px;
     padding-bottom: 40px;
 }
@@ -18,4 +17,20 @@
 .add-user-form{
     z-index: 9999;
     background-color: #fdfdfd;
+    height: auto !important;
+}
+
+.add-user-form{
+    margin-bottom: 20px;
+}
+
+.add-user-close-button-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}
+
+.close-button-icon:hover{
+    cursor: pointer;
 }

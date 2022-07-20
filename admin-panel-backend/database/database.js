@@ -29,11 +29,15 @@ const createUser = (credentials) => {
         console.log(encryptedPassword)
 
         var con = configDB.then((res) => {
-            res.query(`INSERT INTO users (name, age, mobile, email, password) VALUES ('${credentials.name}', '${credentials.age}', '${credentials.mobile}', '${credentials.email}', '${encryptedPassword}');`, function(err, results){
+            res.query(`INSERT INTO users (name, age, mobile, email, password, active, role) VALUES ('${credentials.name}', '${credentials.age}', '${credentials.mobile}', '${credentials.email}', '${encryptedPassword}', '${credentials.active}', '${credentials.role}');`, function(err, results){
                 if(err){
-                    console.log(err);
+                    console.log(err.code);
+                    if(err.code === "ER_DUP_ENTRY"){
+                        reject({success: false, message: "This email address is already in use!"})
+                    }
+                    
                 }else{
-                    resolve(results);
+                    resolve({sucess: true, message: "user added successfully"});
                 }
             })
         })

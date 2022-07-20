@@ -22,7 +22,9 @@ app.post('/addUser', async (req, res) => {
         const result = await createAccountSchema.validateAsync(req.body);
         createUser(req.body).then((result) => {
             console.log(result);
-            res.send(true)
+            res.send(result)
+        }).catch((err) => {
+            res.send(err);
         })
     }catch(err) {
         console.log(err)
