@@ -1,46 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { DownOutlined } from '@ant-design/icons';
 import { Form, Radio, Space, Switch, Table } from 'antd';
 import './UserList.css'
-import { getAllUsers } from '../backend-operations/userOperations';
-
-const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      sorter: (a, b) => a.age - b.age,
-    },
-    {
-        title: 'Mobile',
-        dataIndex: 'mobile',
-      },
-      {
-        title: 'Email',
-        dataIndex: 'email',
-      },
-      {
-        title: 'Role',
-        dataIndex: 'role',
-      },
-
-    {
-      title: 'Action',
-      key: 'action',
-      sorter: true,
-      render: () => (
-        <Space size="middle">
-          <a>Delete</a>
-          <a>
-            Edit
-          </a>
-        </Space>
-      ),
-    },
-  ];
+import { getAllUsers, setActiveUser } from '../backend-operations/userOperations';
 
 
 
@@ -53,7 +15,7 @@ const columns = [
   
   const defaultFooter = () => 'Here is footer';
 
-function UserList() {
+function UserList({handleOpenEditForm, refreshList}) {
     const [loading, setLoading] = useState(false);
     const [size, setSize] = useState('large');
     const [expandable, setExpandable] = useState(defaultExpandable);
@@ -69,6 +31,13 @@ function UserList() {
     const [yScroll, setYScroll] = useState(false);
     const [xScroll, setXScroll] = useState(undefined);
   
+
+
+  
+  
+
+
+
 
   const [data, setData] = useState([{
     key: 1,
@@ -111,10 +80,65 @@ function UserList() {
     mobile: `607234242`,
     email: `aswadaw@gmail.com`,
     role: 'user'
-
   },
 ]);
-  
+
+
+const isIdActive = (id) => {
+  for(var i = 0; i < data.length; i++){
+    if(data[i].key === id){
+
+      if(data[i].active == 1){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+}
+
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    sorter: (a, b) => a.age - b.age,
+  },
+  {
+      title: 'Mobile',
+      dataIndex: 'mobile',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+    },
+    {
+      title: 'Role',
+      dataIndex: 'role',
+    },
+
+  {
+    title: 'Action',
+    key: 'action',
+    sorter: true,
+    render: (event) => (
+      <Space size="middle">
+        <div>
+          <Switch onChange={(e) => setActiveUser(event.key, e)} defaultChecked={isIdActive(event.key)} className="switch"/>
+          <span className='active-txt'>Active</span>
+        </div>
+
+        <a onClick = {(e) => handleOpenEditForm(e.target.parentElement.parentElement.parentElement.parentElement.attributes[0].value)}>
+          Edit
+        </a>
+      </Space>
+    ),
+  },
+];
   
     const handleLoadingChange = (enable) => {
       setLoading(enable);
@@ -185,20 +209,20 @@ function UserList() {
         var newUser;
         var newDataSet = []
         for(var i = 0; i < result.data.data.message.length; i++){
-          console.log(users[i]);
           newUser = {
             key: users[i].id,
             name: users[i].name,
             age: users[i].age,
             mobile: users[i].mobile,
             email: users[i].email,
-            role: users[i].role
+            role: users[i].role,
+            active: users[i].active
           }
           newDataSet.push(newUser)
         }
         setData(newDataSet)
       })
-    }, [])
+    }, [refreshList])
 
   return (
 

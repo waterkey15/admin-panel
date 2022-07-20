@@ -4,12 +4,14 @@ import './AddUser.css'
 import AddUserForm from './AddUserForm';
 
 
-function AddUser() {
+function AddUser({handleRefreshList}) {
 
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
 
   const closeAddUser = () => {
     setIsAddUserOpen(false);
+    handleRefreshList();
+
   }
 
   return (

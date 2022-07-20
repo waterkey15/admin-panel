@@ -17,7 +17,8 @@ function SigninForm({handleCloseSigninForm}) {
           dispatch((SET_USER({
             email: results.data.email,
             userID: results.data.name,
-            role: results.data.role
+            role: results.data.role,
+            active: results.data.active
           }))); 
           handleCloseSigninForm();
         })

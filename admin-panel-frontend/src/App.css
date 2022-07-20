@@ -1,1 +1,20 @@
 @import '~antd/dist/antd.css';
+
+.edit-form-holder{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    position: fixed;
+    top: 250px;
+    z-index: 99999;
+    background-color: white;
+}
+
+.edit-form-div{
+    width: 50%;
+    border: 1px solid blue;
+    padding-left: 30px;
+    padding-top: 25px;
+    padding-right: 30px;
+}

@@ -86,3 +86,80 @@ export const signIn = (credentials) => {
           
     })
 }
+
+export const getSpecificUserInformation = (id) => {
+    return new Promise ((resolve, reject) => {
+        console.log(id)
+        var config = {
+            method: 'get',
+            url: '/getUserById/' + id,
+            headers: { }
+          };
+          
+          axios(config)
+          .then(function (response) {
+            resolve(response.data)
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+          
+    })
+}
+
+export const updateUser = (values) => {
+    return new Promise((resolve, reject) => {
+        var data = JSON.stringify({
+            "id": values.id,
+            "name": values.name,
+            "age": values.age,
+            "mobile": values.mobile,
+            "role": values.role
+          });
+          
+          var config = {
+            method: 'post',
+            url: '/updateUser',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data : data
+          };
+          
+          axios(config)
+          .then(function (response) {
+            resolve(response)
+          })
+          .catch(function (error) {
+            reject(error)
+          });
+          
+    })
+}
+
+export const setActiveUser = (id, isActive) => {
+    return new Promise ((resolve, reject) => {
+        var data = JSON.stringify({
+            "id": id,
+            "active": isActive
+          });
+          
+          var config = {
+            method: 'post',
+            url: '/setActive',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data : data
+          };
+          
+          axios(config)
+          .then(function (response) {
+            resolve(response.data)
+          })
+          .catch(function (error) {
+            reject(error)
+          });
+          
+    })
+}

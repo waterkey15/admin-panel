@@ -13,7 +13,10 @@ function AddUserForm({closeAddUserHandler}) {
     const onFinish = (values) => {
         console.log('Success:', values);
         addUserBackend(values).then((result) => {
-          setSuccessMessage(result.message)
+          setSuccessMessage(result.message);
+          setTimeout(() => {
+            closeAddUserHandler()
+          }, 2000);
         })
         .catch((err) => {
           setErrorMessage(err)
@@ -136,7 +139,6 @@ function AddUserForm({closeAddUserHandler}) {
           span: 16,
         }}
       >
-        <Checkbox>Remember me</Checkbox>
       </Form.Item>
 
       <Form.Item

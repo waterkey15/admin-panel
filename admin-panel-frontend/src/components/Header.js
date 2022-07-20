@@ -16,7 +16,8 @@ function Header() {
         dispatch((SET_USER({
             email: null,
             userID: null,
-            role: null
+            role: null,
+            active: 0
         })));  
     }
 

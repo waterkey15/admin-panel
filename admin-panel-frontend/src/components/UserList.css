@@ -2,3 +2,11 @@
     margin-top: 50px;
     margin-left: 100px;
 }
+
+.active-switch{
+    margin-bottom: 0px !important;
+}
+
+.active-txt{
+    margin-left: 10px;
+}

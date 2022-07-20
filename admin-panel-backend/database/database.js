@@ -71,7 +71,7 @@ const authenticateUser = (credentials) => {
                     console.log(results);
                     issPasswordTrue(credentials.password, results[0].password).then((result) => {
                         if(result === true){
-                            resolve({sucess: true, message: "Sign in succesful", data: {name: results[0].name, email: results[0].email, role: results[0].role}});
+                            resolve({sucess: true, message: "Sign in succesful", data: {name: results[0].name, email: results[0].email, role: results[0].role, active: results[0].active}});
                         }else{
                             reject({sucess: false, message: "Wrong password"})
                         }
@@ -82,5 +82,60 @@ const authenticateUser = (credentials) => {
     })
 }
 
+const getUserById = (id) => {
+    return new Promise((resolve, reject) => {
+        var con = configDB.then((res) => {
+            res.query(`select * from users where id = '${id}';`, function(err, results){
+                if(err){
+                    console.log(err.code);
+                    reject(err.code)
+                }else{
+                    console.log(results[0])
+                    var sentData = {
+                        name : results[0].name,
+                        age: results[0].age,
+                        mobile: results[0].mobile,
+                        email: results[0].email,
+                        role: results[0].role
+                    }
+                    resolve({success: true, data: sentData});
+                }
+            })
+        })
+    })
+}
 
-module.exports = {createUser, getUsers, authenticateUser} 
+const updateUser = (information) => {
+    return new Promise((resolve, reject) => {
+        var con = configDB.then((res) => {
+            res.query(`UPDATE users set name = "${information.name}", age = '${information.age}', mobile="${information.mobile}", role = "${information.role}" where id = '${information.id}';`, function(err, results){
+                if(err){
+                    console.log(err.code);
+                    reject(err.code)
+                }else{
+                    console.log(results[0])
+                    resolve({success: true, message:"user has been updated"})
+                }
+            })
+        })
+    })
+}
+
+const updateActivePropertyById = (id, isActive) => {
+    return new Promise((resolve, reject) => {
+        var con = configDB.then((res) => {
+            res.query(`UPDATE users set active = ${isActive} where id = '${id}';`, function(err, results){
+                if(err){
+                    console.log(err.code);
+                    reject(err.code)
+                }else{
+                    console.log(results[0])
+                    resolve({success: true, message:"user has been updated"})
+                }
+            })
+        })
+    })
+}
+
+
+module.exports = {createUser, getUsers, authenticateUser, getUserById, updateUser, updateActivePropertyById} 
