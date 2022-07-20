@@ -12,15 +12,17 @@ function App() {
 
 
   const user = useSelector((state) => state.user.value);
+  console.log(user)
+
 
   return (
     <div className="App">
       <Header/>
       {
-        user.userID !== null &&
+        user.role ==="admin" &&
         <div>
-        <UserList/>
-        <AddUser/>
+          <UserList/>
+          <AddUser/>
         </div>
 
       }

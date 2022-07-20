@@ -1,11 +1,29 @@
 import React from 'react'
 import { Button, Checkbox, Form, Input } from 'antd';
 import './SigninForm.css';
+import { signIn } from '../backend-operations/userOperations';
+import { SET_USER } from '../features/user/userSlice';
+import { useDispatch } from 'react-redux';
 
-function SigninForm() {
 
+function SigninForm({handleCloseSigninForm}) {
+  const dispatch = useDispatch();
+
+  
     const onFinish = (values) => {
         console.log('Success:', values);
+        signIn(values).then((results) => {
+          console.log(results);
+          dispatch((SET_USER({
+            email: results.data.email,
+            userID: results.data.name,
+            role: results.data.role
+          }))); 
+          handleCloseSigninForm();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       };
     
       const onFinishFailed = (errorInfo) => {
@@ -32,8 +50,8 @@ function SigninForm() {
       autoComplete="off"
     >
       <Form.Item
-        label="Username"
-        name="username"
+        label="Signin"
+        name="email"
         rules={[
           {
             required: true,

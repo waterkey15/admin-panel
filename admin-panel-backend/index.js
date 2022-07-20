@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { createAccountSchema } = require('./joi-authentication/validation_schema');
-const { createUser } = require('./database/database');
+const { createUser, getUsers, authenticateUser } = require('./database/database');
 
 
 
@@ -32,7 +32,26 @@ app.post('/addUser', async (req, res) => {
     }
 })
 
+app.get('/users', (req, res) => {
+    getUsers().then((result) => {
+        console.log(result);
+        res.send({data: result})
+    })
+    .catch((err) => {
+        console.log(err);
+        res.send({success: false})
+    })
+})
 
-
+app.post('/signin', (req, res) => {
+    authenticateUser(req.body).then((result) => {
+        console.log(result);
+        res.send(result)
+    })
+    .catch((err) => {
+        console.log(err);
+        res.send(err)
+    })
+})
 
 app.listen(port, () => console.log(`Admin Panel App listening on ${port}!`));

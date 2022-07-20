@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Checkbox, Form, Input, Radio, Switch } from 'antd';
 import './SigninForm.css';
 import { CloseOutlined } from '@ant-design/icons'
@@ -7,9 +7,17 @@ import { addUserBackend } from '../backend-operations/userOperations';
 
 function AddUserForm({closeAddUserHandler}) {
 
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
     const onFinish = (values) => {
         console.log('Success:', values);
-        addUserBackend(values);
+        addUserBackend(values).then((result) => {
+          setSuccessMessage(result.message)
+        })
+        .catch((err) => {
+          setErrorMessage(err)
+        })
       };
     
       const onFinishFailed = (errorInfo) => {
@@ -104,7 +112,7 @@ function AddUserForm({closeAddUserHandler}) {
         <Input/>
       </Form.Item>
 
-      <Form.Item  label="Switch" valuePropName="checked" name="switch">
+      <Form.Item  label="Active" valuePropName="checked" name="switch">
         <Switch />
       </Form.Item>
 
@@ -140,6 +148,16 @@ function AddUserForm({closeAddUserHandler}) {
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
+        <div>
+          {
+            successMessage
+          }
+        </div>
+        <div>
+          {
+            errorMessage
+          }
+        </div>
       </Form.Item>
     </Form>
     </div>

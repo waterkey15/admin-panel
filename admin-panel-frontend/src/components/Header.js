@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Header.css';
 import { Button } from 'antd';
 import SigninForm from './SigninForm';
+import { SET_USER } from '../features/user/userSlice';
 
 
 function Header() {
@@ -11,6 +12,17 @@ function Header() {
     const user = useSelector((state) => state.user.value);
     const [isSignInOpen, setIsSignInOpen] = useState(false)
 
+    const handleSignout = () => {
+        dispatch((SET_USER({
+            email: null,
+            userID: null,
+            role: null
+        })));  
+    }
+
+    const closeSignInFrom = () => {
+        setIsSignInOpen(!isSignInOpen)
+    }
     console.log(user);
   return (
     <div className='header-container'>
@@ -25,12 +37,12 @@ function Header() {
             :
             <div className='welcommer'>
                 Welcome {user.userID}
-                <Button>Sign out</Button>
+                <Button onClick={handleSignout}>Sign out</Button>
             </div>
         }
         {
             isSignInOpen&&
-            <SigninForm/>
+            <SigninForm handleCloseSigninForm = {(e) => closeSignInFrom()}/>
         }
     </div>
   )

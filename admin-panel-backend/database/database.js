@@ -2,6 +2,7 @@ var mysql = require('mysql');
 const CryptoJS = require("crypto-js");
 var CryptoAES = require('crypto-js/aes');
 var CryptoENC = require('crypto-js/enc-utf8');
+const { issPasswordTrue } = require('../authentication/password');
 require('dotenv').config();
 
 
@@ -44,4 +45,42 @@ const createUser = (credentials) => {
     })
 }
 
-module.exports = {createUser} 
+const getUsers = () => {
+    return new Promise((resolve, reject) => {
+        var con = configDB.then((res) => {
+            res.query(`select * from users;`, function(err, results){
+                if(err){
+                    console.log(err.code);
+                }else{
+                    console.log(results)
+                    resolve({sucess: true, message: results});
+                }
+            })
+        })
+    })
+}
+
+const authenticateUser = (credentials) => {
+    return new Promise((resolve, reject) => {
+        var con = configDB.then((res) => {
+            res.query(`select * from users where email = '${credentials.email}';`, function(err, results){
+                if(err){
+                    console.log(err.code);
+                    reject(err.code)
+                }else{
+                    console.log(results);
+                    issPasswordTrue(credentials.password, results[0].password).then((result) => {
+                        if(result === true){
+                            resolve({sucess: true, message: "Sign in succesful", data: {name: results[0].name, email: results[0].email, role: results[0].role}});
+                        }else{
+                            reject({sucess: false, message: "Wrong password"})
+                        }
+                    })
+                }
+            })
+        })
+    })
+}
+
+
+module.exports = {createUser, getUsers, authenticateUser} 

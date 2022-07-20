@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DownOutlined } from '@ant-design/icons';
 import { Form, Radio, Space, Switch, Table } from 'antd';
 import './UserList.css'
+import { getAllUsers } from '../backend-operations/userOperations';
 
 const columns = [
     {
@@ -40,7 +41,36 @@ const columns = [
       ),
     },
   ];
-  const data = [{
+
+
+
+  
+  const defaultExpandable = {
+    expandedRowRender: (record) => <p>{record.description}</p>,
+  };
+  
+  const defaultTitle = () => 'Here is title';
+  
+  const defaultFooter = () => 'Here is footer';
+
+function UserList() {
+    const [loading, setLoading] = useState(false);
+    const [size, setSize] = useState('large');
+    const [expandable, setExpandable] = useState(defaultExpandable);
+    const [showTitle, setShowTitle] = useState(false);
+    const [showHeader, setShowHeader] = useState(true);
+    const [showfooter, setShowFooter] = useState(true);
+    const [rowSelection, setRowSelection] = useState({});
+    const [hasData, setHasData] = useState(true);
+    const [tableLayout, setTableLayout] = useState(undefined);
+    const [top, setTop] = useState('none');
+    const [bottom, setBottom] = useState('bottomRight');
+    const [ellipsis, setEllipsis] = useState(false);
+    const [yScroll, setYScroll] = useState(false);
+    const [xScroll, setXScroll] = useState(undefined);
+  
+
+  const [data, setData] = useState([{
     key: 1,
     name: 'John Brown 1',
     age: Number(`33`),
@@ -83,35 +113,8 @@ const columns = [
     role: 'user'
 
   },
-];
+]);
   
-
-  
-  const defaultExpandable = {
-    expandedRowRender: (record) => <p>{record.description}</p>,
-  };
-  
-  const defaultTitle = () => 'Here is title';
-  
-  const defaultFooter = () => 'Here is footer';
-
-function UserList() {
-    const [loading, setLoading] = useState(false);
-    const [size, setSize] = useState('large');
-    const [expandable, setExpandable] = useState(defaultExpandable);
-    const [showTitle, setShowTitle] = useState(false);
-    const [showHeader, setShowHeader] = useState(true);
-    const [showfooter, setShowFooter] = useState(true);
-    const [rowSelection, setRowSelection] = useState({});
-    const [hasData, setHasData] = useState(true);
-    const [tableLayout, setTableLayout] = useState(undefined);
-    const [top, setTop] = useState('none');
-    const [bottom, setBottom] = useState('bottomRight');
-    const [ellipsis, setEllipsis] = useState(false);
-    const [yScroll, setYScroll] = useState(false);
-    const [xScroll, setXScroll] = useState(undefined);
-  
-
   
     const handleLoadingChange = (enable) => {
       setLoading(enable);
@@ -175,6 +178,27 @@ function UserList() {
       scroll,
       tableLayout,
     };
+      
+    useEffect(() => {
+      getAllUsers().then((result) => {
+        var users = result.data.data.message;
+        var newUser;
+        var newDataSet = []
+        for(var i = 0; i < result.data.data.message.length; i++){
+          console.log(users[i]);
+          newUser = {
+            key: users[i].id,
+            name: users[i].name,
+            age: users[i].age,
+            mobile: users[i].mobile,
+            email: users[i].email,
+            role: users[i].role
+          }
+          newDataSet.push(newUser)
+        }
+        setData(newDataSet)
+      })
+    }, [])
 
   return (
 
