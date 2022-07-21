@@ -164,3 +164,19 @@ export const setActiveUser = (id, isActive) => {
           
     })
 }
+
+export const sendPhoto = (file) => {
+    const data = new FormData();
+    data.append("avatar", file);
+
+    axios.post("/imageupload", data, {
+        headers: {"Content-Type": "multipart/form-data"}
+    })
+    .then((result) => {
+        console.log(result);
+    })
+    .catch((err)=> {
+        console.log(err)
+    })
+
+}

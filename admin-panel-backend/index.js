@@ -2,12 +2,13 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { createAccountSchema } = require('./joi-authentication/validation_schema');
-const { createUser, getUsers, authenticateUser, getUserById, updateUser, updateActivePropertyById } = require('./database/database');
 const db = require('./models')
 const {User} = require('./models');
 const { resolve } = require('path');
 const CryptoJS = require("crypto-js");
 const { issPasswordTrue } = require('./authentication/password');
+const multer = require('multer');
+const path  = require('path');
 require('dotenv').config();
 
 
@@ -117,6 +118,36 @@ app.post('/setActive', (req, res) => {
     .catch((err) => {
         res.send(err);
     })
+})
+
+
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, '../public_html/', '/uploads'),
+    filename: function(req, file, cb){
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
+
+app.post('/imageupload', async (req, res) => {
+    try{
+        console.log("=-=-=-=--=-=-==-=-=--=")
+        console.log(req.files)
+        let upload = multer({storage: storage}).single('avatar');
+
+        upload(req, res, function(err){
+            if(!req.file){
+                return res.send('please select and image to upload')
+            }
+            else if (err instanceof multer.MulterError){
+                return res.send(err)
+            }
+            else if (err){
+                return res.send(err);
+            }
+        })
+    }catch(err){
+        console.log(err)
+    }
 })
 
 
