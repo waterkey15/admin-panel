@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Checkbox, Form, Input } from 'antd';
 import './SigninForm.css';
 import { signIn } from '../backend-operations/userOperations';
@@ -9,18 +9,23 @@ import { useDispatch } from 'react-redux';
 function SigninForm({handleCloseSigninForm}) {
   const dispatch = useDispatch();
 
+  const [errorMessage, setErrorMessage] = useState('')
   
     const onFinish = (values) => {
         console.log('Success:', values);
         signIn(values).then((results) => {
           console.log(results);
-          dispatch((SET_USER({
-            email: results.data.email,
-            userID: results.data.name,
-            role: results.data.role,
-            active: results.data.active
-          }))); 
-          handleCloseSigninForm();
+          if(results.success === false){
+            setErrorMessage(results.message)
+          }else{
+            dispatch((SET_USER({
+              email: results.data.email,
+              userID: results.data.name,
+              role: results.data.role,
+              active: results.data.active
+            }))); 
+            handleCloseSigninForm();
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -93,6 +98,11 @@ function SigninForm({handleCloseSigninForm}) {
           span: 16,
         }}
       >
+        {
+          errorMessage.length > 3&&
+          <p>{errorMessage}</p>
+
+        }
         <Button type="primary" htmlType="submit">
           Submit
         </Button>

@@ -78,6 +78,7 @@ export const signIn = (credentials) => {
           
           axios(config)
           .then(function (response) {
+            console.log(response.data)
             resolve(response.data)
           })
           .catch(function (error) {

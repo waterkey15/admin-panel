@@ -83,20 +83,22 @@ function UserList({handleOpenEditForm, refreshList}) {
   },
 ]);
 
-
 const isIdActive = (id) => {
+  console.log(data)
   for(var i = 0; i < data.length; i++){
     if(data[i].key === id){
-
       if(data[i].active == 1){
+        console.log(id + "===>" + "true")
         return true;
       }else{
+        console.log(id + "===>" + "false")
         return false;
       }
     }
   }
 }
 
+const dummy = false;
 
 const columns = [
   {
@@ -128,7 +130,14 @@ const columns = [
     render: (event) => (
       <Space size="middle">
         <div>
-          <Switch onChange={(e) => setActiveUser(event.key, e)} defaultChecked={isIdActive(event.key)} className="switch"/>
+          {
+            event.active === 1 &&
+            <Switch onChange={(e) => setActiveUser(event.key, e)}   className="switch" disabled={event.name === "admin"} defaultChecked/>
+          }
+          {
+            event.active === 0 &&
+            <Switch onChange={(e) => setActiveUser(event.key, e)}   className="switch" disabled={event.name === "admin"} />
+          }
           <span className='active-txt'>Active</span>
         </div>
 
@@ -205,10 +214,11 @@ const columns = [
       
     useEffect(() => {
       getAllUsers().then((result) => {
-        var users = result.data.data.message;
+        console.log(result)
+        var users = result.data;
         var newUser;
         var newDataSet = []
-        for(var i = 0; i < result.data.data.message.length; i++){
+        for(var i = 0; i < result.data.length; i++){
           newUser = {
             key: users[i].id,
             name: users[i].name,

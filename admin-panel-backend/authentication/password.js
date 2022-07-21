@@ -13,9 +13,10 @@ const issPasswordTrue = (passwordGiven, passwordDB) => {
         if(passwordGiven === passwordFromDatabase.toString(CryptoENC)){
             resolve(true);
         }else{
-            resolve(false);
+            reject(false);
         }
     })
 }
+
 
 module.exports = {issPasswordTrue} 
