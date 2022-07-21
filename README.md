@@ -7,18 +7,9 @@ Scope is to code a full-stack application for an admin panel. Only the role "adm
 
 - React (used ANTD for UI)
 - Node JS (used JOI for API validation, used Axios for sending API requests will use blob)
-- MySQL (will use Sequelize ORM)
+- MySQL (Sequelize ORM used for SQL qeuries)
 
-```bash
-pip install foobar
-```
 
-## To-Dos
-- Adding Role column to database
-- Make a create user form in React that excepts database properties
-- Make email unique
-- Make delete button a toggle button 
-- Adding isActive column to database to see if a user can sign in to see the admin-panel
 
 ## Prerequisites
 - NodeJs installed
