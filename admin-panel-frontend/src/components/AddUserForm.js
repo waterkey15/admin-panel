@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Checkbox, Form, Input, Radio, Switch, message, Upload  } from 'antd';
+import { Button, Checkbox, Form, Input, Radio, Switch, message, Upload, Space, InputNumber, Select} from 'antd';
 import './SigninForm.css';
 import { CloseOutlined,  LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { addUserBackend, sendPhoto } from '../backend-operations/userOperations';
+const { Option } = Select;
 
 
 const getBase64 = (img, callback) => {
@@ -41,6 +42,7 @@ function AddUserForm({closeAddUserHandler}) {
             setErrorMessage(result.message)
           }else{
             setSuccessMessage(result.message);
+            success();
             setTimeout(() => {
               closeAddUserHandler()
             }, 2000);
@@ -83,6 +85,21 @@ function AddUserForm({closeAddUserHandler}) {
             Upload
           </div>
         </div>
+      );
+      const success = () => {
+        message.success('User added successfully');
+      };
+
+      const prefixSelector = (
+        <Form.Item name="prefix" noStyle>
+          <Select
+            style={{
+              width: 70,
+            }}
+          >
+            <Option value="1">+1</Option>
+          </Select>
+        </Form.Item>
       );
 
 
@@ -143,7 +160,7 @@ function AddUserForm({closeAddUserHandler}) {
           },
         ]}
       >
-        <Input/>
+        <InputNumber min={1} max={150}/>
       </Form.Item>
 
       <Form.Item
@@ -156,7 +173,11 @@ function AddUserForm({closeAddUserHandler}) {
           },
         ]}
       >
-        <Input/>
+        <Input addonBefore={prefixSelector}
+            style={{
+              width: '100%',
+            }}
+            />
       </Form.Item>
 
       <Form.Item
@@ -249,6 +270,7 @@ function AddUserForm({closeAddUserHandler}) {
         </div>
       </Form.Item>
     </Form>
+    <Space></Space>
     </div>
   )
 }

@@ -7,7 +7,10 @@ import { useSelector } from 'react-redux';
 import UserList from './components/UserList';
 import AddUser from './components/AddUser';
 import EditForm from './components/EditForm';
+import { Tabs } from 'antd';
+import AddUserForm from './components/AddUserForm';
 
+const { TabPane } = Tabs;
 
 function App() {
 
@@ -37,8 +40,21 @@ function App() {
       {
         user.role ==="admin"&&user.active===1 &&
         <div>
-          <UserList refreshList={refreshList} handleOpenEditForm={(information) => openEditForm(information)}/>
-          <AddUser handleRefreshList={(e) => refreshListFnc()}/>
+          <Tabs defaultActiveKey="1" centered>
+            <TabPane  tab="UserList" key="1" >
+              <UserList refreshList={refreshList} handleOpenEditForm={(information) => openEditForm(information)}/>
+              <AddUser handleRefreshList={(e) => refreshListFnc()}/>
+            </TabPane>
+            <TabPane tab="Add User" key="2">
+            <AddUserForm />
+            </TabPane>
+          </Tabs>
+        </div>
+      }
+      {
+        (user.role ==="user"||user.active===0)&&user.role!==null &&
+        <div>
+          You are not allowed to see the user list
         </div>
       }
       {

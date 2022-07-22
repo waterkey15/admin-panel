@@ -108,7 +108,7 @@ import { getSpecificUserInformation, updateUser } from '../backend-operations/us
             width: 70,
           }}
         >
-          <Option value="86">+1</Option>
+          <Option value="1">+1</Option>
         </Select>
       </Form.Item>
     );
@@ -248,7 +248,7 @@ import { getSpecificUserInformation, updateUser } from '../backend-operations/us
             },
           ]}
         >
-          <Input placeholder={age} />
+          <InputNumber min={1} max={150} defaultValue={age}/>
         </Form.Item>
         <Form.Item name="role" label="Role">
         <Radio.Group defaultValue={"user"}>
